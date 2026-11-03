@@ -7,8 +7,8 @@
   --wall: #FAFAF7;
   --stone: #6E6A66;
   --line: #D9D6D0;
-  --serif: "Young Serif", Georgia, "Times New Roman", serif;
-  --sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif: "Young Serif", "Noto Serif Malayalam", Georgia, "Times New Roman", serif;
+  --sans: "Manrope", "Noto Sans Malayalam", system-ui, -apple-system, "Segoe UI", sans-serif;
   --ml: "Noto Serif Malayalam", "Manjari", serif;
   --ease: cubic-bezier(.2,.7,.2,1);
   --glow: 0 0 0 6px rgba(243,199,123,.25), 0 0 40px rgba(243,199,123,.2);
@@ -24,7 +24,7 @@ body {
   background: var(--wall);
 }
 img { max-width: 100%; }
-h1, h2 { font-family: var(--serif); font-weight: 400; line-height: 1.15; }
+h1, h2 { font-family: var(--serif); font-weight: 400; line-height: 1.35; }
 :focus-visible { outline: 3px solid var(--lamp); outline-offset: 3px; border-radius: 4px; }
 
 /* ---------- Hero ---------- */
@@ -134,6 +134,17 @@ h1, h2 { font-family: var(--serif); font-weight: 400; line-height: 1.15; }
 @keyframes clothsway { from { rotate: -1.2deg; } to { rotate: 1.2deg; } }
 .mflame { transform-box: fill-box; transform-origin: 50% 100%; animation: flick .6s ease-in-out infinite; }
 
+/* 3D house: fades in over the photo; the 2D illustration steps aside. */
+.house3d { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1.2s var(--ease); }
+.has-3d .house3d { opacity: 1; }
+.has-3d .scene { opacity: 0; transition: opacity 1.2s var(--ease); }
+.has-3d .scene-art { display: none; }
+.has-3d .stage::before { opacity: 0; }
+.has-3d { touch-action: pan-y; }
+.pending .hero-bottom { opacity: 0; }
+@media (scripting: none) { .pending .hero-bottom { opacity: 1; } }
+.has-3d.play .hero-bottom { animation-delay: 6s; }
+
 /* Date, countdown and reply button wait until the family is inside. */
 .play .hero-bottom { animation: rise 1s 5.6s var(--ease) both; }
 .replay { background: none; border: 0; padding: .25rem; font: 600 .875rem var(--sans); color: var(--wall); opacity: .7; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
@@ -194,7 +205,7 @@ h1, h2 { font-family: var(--serif); font-weight: 400; line-height: 1.15; }
   border-radius: 999px;
   background: var(--palm);
   color: var(--wall);
-  font: 700 1rem/1 var(--sans);
+  font: 700 1rem/1.4 var(--sans);
   text-decoration: none;
   cursor: pointer;
   transition: background .2s;
@@ -356,7 +367,7 @@ th { font-size: .9rem; color: var(--stone); }
 .admin-actions { display: flex; align-items: center; gap: 1.25rem; }
 
 /* ---------- Shared: eyebrow, ornament, reveal, spotlight ---------- */
-.eyebrow { font-size: .78rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--copper); }
+.eyebrow { font-size: .95rem; font-weight: 700; letter-spacing: 0; color: var(--copper); }
 .orn { display: block; width: 140px; height: 14px; color: var(--copper); margin: .85rem 0 .25rem; }
 .location .eyebrow, .kundam .eyebrow { color: var(--lamp); opacity: .85; }
 .location .orn, .kundam .orn { color: var(--lamp); }
@@ -399,7 +410,7 @@ th { font-size: .9rem; color: var(--stone); }
   border-radius: 999px;
   background: var(--lamp);
   color: var(--ink);
-  font: 700 1rem/1 var(--sans);
+  font: 700 1rem/1.4 var(--sans);
   text-decoration: none;
   box-shadow: 0 6px 24px rgba(28,42,51,.3), 0 0 24px rgba(243,199,123,.5);
   opacity: 0;
@@ -445,3 +456,85 @@ th { font-size: .9rem; color: var(--stone); }
 .kundam-count { font-size: .95rem; opacity: .75; min-height: 1.6em; }
 .blessing { display: grid; gap: .15rem; font-family: var(--serif); font-size: 1.2rem; color: var(--lamp); animation: rise .8s var(--ease) both; }
 .blessing .ml { font-family: var(--ml); font-weight: 700; font-size: 1.9rem; }
+
+/* ---------- Pick a Kuppi (hidden poll) ---------- */
+.kuppi { min-height: 100svh; background: var(--ink); color: var(--wall); padding: clamp(2rem, 6vw, 4rem) 1.25rem; }
+.kuppi-inner { max-width: 760px; margin: 0 auto; display: grid; justify-items: center; gap: 1rem; text-align: center; }
+.kuppi .eyebrow { color: var(--lamp); opacity: .85; }
+.kuppi h1 { font-size: clamp(2.4rem, 7vw, 3.75rem); color: var(--lamp); }
+.kuppi-lede { max-width: 46ch; opacity: .85; }
+.kuppi .link-btn { color: var(--lamp); }
+
+.kuppi-stage { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1rem, 5vw, 3rem); align-items: end; margin-top: .5rem; }
+.bottle { margin: 0; justify-self: center; width: min(100%, 230px); animation: bottlein .7s var(--ease) both; }
+.bottle svg { display: block; width: 100%; height: auto; overflow: visible; }
+.kuppi-layer { transition: transform .7s var(--ease); }
+.kuppi-stream { transform-box: fill-box; transform-origin: 50% 0; animation: stream .9s ease-out both; }
+@keyframes stream { 0% { transform: scaleY(0); opacity: 1; } 35% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
+@keyframes bottlein { from { opacity: 0; translate: -24px 0; } to { opacity: 1; translate: 0 0; } }
+
+.bottle.is-full { animation: bottleglow .9s ease-in-out both; }
+@keyframes bottleglow { 0%, 100% { filter: none; } 50% { filter: drop-shadow(0 0 22px rgba(243,199,123,.9)); } }
+/* Lifts, then slides into the locker while the door is open. */
+.bottle.is-storing { animation: store 2.6s var(--ease) both; }
+@keyframes store {
+  0% { translate: 0 0; scale: 1; opacity: 1; }
+  18% { translate: 0 -3%; scale: 1.03; opacity: 1; }
+  58% { translate: 98% 6%; scale: .4; opacity: 1; }
+  72%, 100% { translate: 112% 8%; scale: .3; opacity: 0; }
+}
+
+.locker { justify-self: center; width: min(100%, 220px); perspective: 700px; display: grid; gap: .5rem; }
+.locker-title { font-weight: 700; color: var(--lamp); }
+.locker-box { position: relative; height: 300px; border: 4px solid #3A4A55; border-radius: 10px; background: #121B21; box-shadow: inset 0 0 24px rgba(0,0,0,.6); }
+.locker-shelf { position: absolute; inset: 10px; display: flex; flex-wrap: wrap; align-content: flex-end; justify-content: center; gap: 6px 4px; }
+.mini { width: 26px; height: auto; }
+.locker-door {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  background: linear-gradient(120deg, rgba(110,138,152,.35), rgba(60,80,92,.55));
+  border-right: 3px solid #4C5E6A;
+  transform-origin: 0 50%;
+  display: grid;
+  place-items: center;
+}
+.locker-vents { position: absolute; left: 18%; right: 18%; top: 14%; height: 34%; background: repeating-linear-gradient(rgba(0,0,0,.35) 0 4px, transparent 4px 11px); border-radius: 4px; }
+.locker-lock { width: 22px; position: absolute; right: 14px; top: 50%; }
+.locker.is-storing .locker-door { animation: door 2.6s var(--ease) both; }
+.locker.is-storing .locker-lock { animation: lockclick 2.6s ease-out both; }
+@keyframes door { 0%, 8% { transform: rotateY(0); } 22%, 60% { transform: rotateY(-78deg); } 78%, 100% { transform: rotateY(0); } }
+@keyframes lockclick { 0%, 76% { scale: 1; filter: none; } 84% { scale: 1.35; filter: drop-shadow(0 0 10px #F3C77B); } 100% { scale: 1; filter: none; } }
+.locker-count { font-size: .95rem; opacity: .8; }
+
+.kuppi-ml { font-family: var(--serif); font-size: 1.5rem; color: var(--lamp); min-height: 1.6em; }
+.kuppi-brands { width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: .75rem; }
+.brand {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas: "dot name n" "dot kind n" "bar bar bar";
+  align-items: center;
+  column-gap: .75rem;
+  row-gap: .15rem;
+  padding: .85rem 1rem;
+  border: 1.5px solid rgba(250,250,247,.2);
+  border-radius: 14px;
+  background: rgba(250,250,247,.05);
+  color: var(--wall);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .15s, background .15s, transform .15s;
+}
+.brand:hover:not(:disabled) { border-color: var(--c); background: rgba(250,250,247,.1); }
+.brand:active:not(:disabled) { transform: scale(.98); }
+.brand:disabled { opacity: .55; cursor: wait; }
+.brand-dot { grid-area: dot; width: 26px; height: 26px; border-radius: 50%; background: var(--c); box-shadow: 0 0 14px var(--c); }
+.brand-name { grid-area: name; font-weight: 700; }
+.brand-kind { grid-area: kind; font-size: .85rem; opacity: .7; }
+.brand-n { grid-area: n; font-size: .9rem; opacity: .85; }
+.brand-bar { grid-area: bar; margin-top: .5rem; height: 4px; border-radius: 2px; background: rgba(250,250,247,.12); overflow: hidden; }
+.brand-bar span { display: block; height: 100%; background: var(--c); transition: width .6s var(--ease); }
+.kuppi .err { color: #FFB4A6; }
+.kuppi-note { font-size: .85rem; opacity: .6; }

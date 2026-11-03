@@ -111,15 +111,15 @@ export default function Homakundam() {
   return (
     <section className="kundam" id="kundam" ref={sec} aria-labelledby="kundam-title">
       <div className="kundam-inner">
-        <p className="eyebrow" data-reveal>A new beginning</p>
-        <h2 id="kundam-title" data-reveal style={{ "--i": 1 }}>Every home begins with a flame</h2>
+        <p className="eyebrow" data-reveal>പുതിയ തുടക്കം</p>
+        <h2 id="kundam-title" data-reveal style={{ "--i": 1 }}>ഓരോ വീടും തുടങ്ങുന്നത് ഒരു ദീപനാളത്തിൽ നിന്നാണ്</h2>
         <Ornament />
         <p className="kundam-lede" data-reveal style={{ "--i": 2 }}>
-          Offer a little ghee and watch the fire rise. We would love you to be there when we light the real one.
+          കുറച്ച് നെയ്യ് അർപ്പിച്ച് അഗ്നി ഉയരുന്നത് കാണൂ. ഞങ്ങൾ യഥാർഥ ഹോമകുണ്ഡത്തിൽ അഗ്നി തെളിക്കുമ്പോൾ നിങ്ങളും കൂടെയുണ്ടാകണം.
         </p>
 
         <figure className="fire" style={{ "--heat": heat, "--fl": flare ? 0.22 : 0 }}>
-          <svg viewBox="0 0 400 300" role="img" aria-label="A homa kundam with a burning fire">
+          <svg viewBox="0 0 400 300" role="img" aria-label="അഗ്നി ജ്വലിക്കുന്ന ഹോമകുണ്ഡം">
             <defs>
               <radialGradient id="fireGlow">
                 <stop offset="0" stopColor="#F3C77B" stopOpacity="0.55" />
@@ -159,15 +159,15 @@ export default function Homakundam() {
         </figure>
 
         <button type="button" className="btn btn-glow" onClick={offer}>
-          Offer ghee
+          നെയ്യ് അർപ്പിക്കൂ
         </button>
         <p className="kundam-count" aria-live="polite">
-          {offers === 0 ? "Tap to offer ghee" : `${offers} ${offers === 1 ? "offering" : "offerings"}`}
+          {offers === 0 ? "നെയ്യ് അർപ്പിക്കാൻ ബട്ടൺ തൊടുക" : `${offers} തവണ അർപ്പിച്ചു`}
         </p>
         {offers >= 3 && (
           <p className="blessing">
             <span className="ml" lang="ml">ശുഭം</span>
-            May this home be full of light.
+            ഈ വീട് വെളിച്ചം നിറഞ്ഞതാകട്ടെ.
           </p>
         )}
       </div>

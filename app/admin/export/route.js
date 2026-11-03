@@ -20,7 +20,7 @@ export async function GET() {
     const at = new Date(r.at).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
     lines.push([r.name, day, r.laterDate || "", r.guests, at].map(cell).join(","));
   }
-  return new Response(lines.join("\r\n"), {
+  return new Response("\uFEFF" + lines.join("\r\n"), {
     headers: {
       "Content-Type": "text/csv; charset=utf-8",
       "Content-Disposition": 'attachment; filename="housewarming-rsvps.csv"',

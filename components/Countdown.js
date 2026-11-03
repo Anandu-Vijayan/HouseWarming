@@ -12,10 +12,10 @@ function parts(ms) {
 }
 
 const UNITS = [
-  ["days", "days"],
-  ["hours", "hours"],
-  ["minutes", "min"],
-  ["seconds", "sec"],
+  ["days", "ദിവസം"],
+  ["hours", "മണിക്കൂർ"],
+  ["minutes", "മിനിറ്റ്"],
+  ["seconds", "സെക്കൻഡ്"],
 ];
 
 export default function Countdown({ target }) {
@@ -29,13 +29,13 @@ export default function Countdown({ target }) {
   }, []);
 
   if (now !== null && now >= end) {
-    return <p className="cd-open">The door is open. Come on in.</p>;
+    return <p className="cd-open">വാതിൽ തുറന്നിരിക്കുന്നു. അകത്തേക്ക് വരൂ.</p>;
   }
 
   const p = now === null ? null : parts(end - now);
 
   return (
-    <div className="cd" role="timer" aria-label="Time until the housewarming">
+    <div className="cd" role="timer" aria-label="ഗൃഹപ്രവേശത്തിന് ബാക്കിയുള്ള സമയം">
       {UNITS.map(([key, label]) => (
         <div className="cd-cell" key={key}>
           <span className="cd-num">{p ? String(p[key]).padStart(2, "0") : "--"}</span>

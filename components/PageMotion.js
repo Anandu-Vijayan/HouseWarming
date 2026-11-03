@@ -77,7 +77,7 @@ export default function PageMotion() {
         <span ref={bar} />
       </div>
       <a href="#rsvp" className={`fab ${showCta ? "is-on" : ""}`} tabIndex={showCta ? 0 : -1} aria-hidden={!showCta}>
-        Reply
+        മറുപടി
       </a>
     </>
   );

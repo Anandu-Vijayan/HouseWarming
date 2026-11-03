@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import Fireflies from "./Fireflies";
+import House3D from "./House3D";
 
 // Holds the photo and the illustration on one box (same size, same parallax)
 // and feeds scroll and pointer position to the hero as CSS variables.
@@ -39,6 +40,7 @@ export default function HeroScene({ art, children }) {
     <div className="stage" ref={ref}>
       <div className="scene">{children}</div>
       <div className="scene scene-art" aria-hidden="true">{art}</div>
+      <House3D />
       <Fireflies />
     </div>
   );

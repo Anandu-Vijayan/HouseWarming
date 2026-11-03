@@ -8,11 +8,12 @@ export default function ReplayButton() {
     hero.classList.remove("play");
     void hero.offsetWidth;
     hero.classList.add("play");
+    window.dispatchEvent(new Event("hero:replay"));
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
   return (
     <button type="button" className="replay" onClick={replay}>
-      Watch the story again
+      കഥ വീണ്ടും കാണുക
     </button>
   );
 }

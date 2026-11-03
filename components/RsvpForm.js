@@ -1,6 +1,11 @@
 "use client";
 import { useState } from "react";
 
+// "2026-12-05" -> "5 ഡിസംബർ 2026"; UTC so the day never shifts with the viewer's timezone.
+function niceDate(iso) {
+  return new Date(iso).toLocaleDateString("ml-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+}
+
 export default function RsvpForm({ days, laterMinDate }) {
   const [name, setName] = useState("");
   const [day, setDay] = useState(days.filter((d) => !d.later).slice(-1)[0].id);
@@ -13,11 +18,11 @@ export default function RsvpForm({ days, laterMinDate }) {
     e.preventDefault();
     setError("");
     if (name.trim().length < 2) {
-      setError("Enter your name.");
+      setError("നിങ്ങളുടെ പേര് നൽകുക.");
       return;
     }
     if (day === "later" && !laterDate) {
-      setError("Pick the date you plan to visit.");
+      setError("വരാൻ ഉദ്ദേശിക്കുന്ന തീയതി തിരഞ്ഞെടുക്കുക.");
       return;
     }
     setStatus("sending");
@@ -28,7 +33,7 @@ export default function RsvpForm({ days, laterMinDate }) {
         body: JSON.stringify({ name, day, guests, laterDate: day === "later" ? laterDate : "" }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Could not save your reply.");
+      if (!res.ok) throw new Error(data.error || "മറുപടി സേവ് ചെയ്യാൻ കഴിഞ്ഞില്ല.");
       setStatus("done");
     } catch (err) {
       setError(err.message);
@@ -40,13 +45,13 @@ export default function RsvpForm({ days, laterMinDate }) {
     const chosen = days.find((d) => d.id === day);
     return (
       <div className="rsvp-done" role="status">
-        <p className="rsvp-done-title">Thank you, {name.trim().split(" ")[0]}.</p>
+        <p className="rsvp-done-title">നന്ദി, {name.trim().split(" ")[0]}.</p>
         <p>
-          We have you down for {day === "later" ? `${laterDate} (after the function)` : chosen.label}
-          {guests > 1 ? `, ${guests} people` : ""}. See you there.
+          {day === "later" ? niceDate(laterDate) : chosen.label}-ന് നിങ്ങളുടെ പേര്
+          ചേർത്തിട്ടുണ്ട്{guests > 1 ? ` (${guests} പേർ)` : ""}. അന്ന് കാണാം.
         </p>
         <button type="button" className="link-btn" onClick={() => setStatus("idle")}>
-          Change my reply
+          മറുപടി മാറ്റുക
         </button>
       </div>
     );
@@ -55,20 +60,20 @@ export default function RsvpForm({ days, laterMinDate }) {
   return (
     <form className="rsvp" onSubmit={send} noValidate>
       <label className="field">
-        <span>Your name</span>
+        <span>നിങ്ങളുടെ പേര്</span>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           autoComplete="name"
           maxLength={80}
-          placeholder="Full name"
+          placeholder="മുഴുവൻ പേര്"
           required
         />
       </label>
 
       <fieldset className="field">
-        <legend>Which day are you coming?</legend>
+        <legend>ഏത് ദിവസമാണ് വരുന്നത്?</legend>
         <div className="days">
           {days.map((d) => (
             <label key={d.id} className={`day ${day === d.id ? "is-on" : ""}`}>
@@ -86,7 +91,7 @@ export default function RsvpForm({ days, laterMinDate }) {
         </div>
         {day === "later" && (
           <label className="later-date">
-            <span>Which date are you planning to come?</span>
+            <span>ഏത് തീയതിക്കാണ് വരാൻ ഉദ്ദേശിക്കുന്നത്?</span>
             <input
               type="date"
               value={laterDate}
@@ -99,13 +104,13 @@ export default function RsvpForm({ days, laterMinDate }) {
       </fieldset>
 
       <div className="field">
-        <span id="guests-label">How many of you?</span>
+        <span id="guests-label">നിങ്ങൾ എത്ര പേർ വരും?</span>
         <div className="stepper" role="group" aria-labelledby="guests-label">
-          <button type="button" onClick={() => setGuests((g) => Math.max(1, g - 1))} aria-label="One less">
+          <button type="button" onClick={() => setGuests((g) => Math.max(1, g - 1))} aria-label="ഒരാളെ കുറയ്ക്കുക">
             −
           </button>
           <output aria-live="polite">{guests}</output>
-          <button type="button" onClick={() => setGuests((g) => Math.min(20, g + 1))} aria-label="One more">
+          <button type="button" onClick={() => setGuests((g) => Math.min(20, g + 1))} aria-label="ഒരാളെ കൂട്ടുക">
             +
           </button>
         </div>
@@ -114,7 +119,7 @@ export default function RsvpForm({ days, laterMinDate }) {
       {error && <p className="err" role="alert">{error}</p>}
 
       <button className="btn" type="submit" disabled={status === "sending"}>
-        {status === "sending" ? "Sending…" : "Send my reply"}
+        {status === "sending" ? "അയയ്ക്കുന്നു…" : "മറുപടി അയയ്ക്കുക"}
       </button>
     </form>
   );
